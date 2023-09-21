@@ -8,23 +8,23 @@ CREATE TABLE departments (
    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
    department_name VARCHAR(30) NOT NULL,
 )
--- needs id, name, etc.
-
-
-
 
 CREATE TABLE roles(
    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
-   role_name VARCHAR(30) NOT NULL,
+   job_title VARCHAR(30) NOT NULL,
+   salary INT NOT NULL,
+   department_id 
+   -- connect to department table id.
 )
--- needs id, name, etc
-
-
 
 CREATE TABLE employees(
    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
    first_name VARCHAR(30) NOT NULL,
    last_name VARCHAR(50) NOT NULL,
---    add connection to departments and roles 
+   job_title,
+   -- connect to roles table
+   department_id,
+   -- connect to department table
+   salary INT NOT NULL,
+   managers
 )
---  needs id, name, etc
