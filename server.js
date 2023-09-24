@@ -231,7 +231,7 @@ updateEmployee = () => {
         if (employeeInput) {
           return true;
         } else {
-          console.log('Please Choose An Employee!');
+          console.log('Please Choose An Employee Via Last Name!');
           return false;
         }
       }
@@ -252,7 +252,11 @@ updateEmployee = () => {
     }
   ])
   .then((answer) => {
-   
+    db.query(`UPDATE employee SET ? WHERE ?`, [{role_id: answer.role}, {last_name: answer.employee}], (err, result) => {
+      if (err) throw err;
+      console.log(`Updated ${answer.employee} role to the database.`)
+      options();
+  });
   })
 }
 
