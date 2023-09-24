@@ -101,6 +101,7 @@ addDepartment = () => {
 addRole = () => {
   inquirer.prompt([
     {
+      // adding a role
       type: 'input',
       name: 'addRole',
       message: "What role would you like to add?",
@@ -114,6 +115,7 @@ addRole = () => {
       }
     },
     {
+      // adding a salary
       type: 'input',
       name: 'salary',
       message: "what is the salary for this position?",
@@ -127,6 +129,7 @@ addRole = () => {
       }
     },
     {
+      // adding a department
       type: 'input',
       name: 'department',
       message: 'what department does this role belong to?',
@@ -144,7 +147,7 @@ addRole = () => {
       db.query(`INSERT INTO role (job_title, salary, department_id) VALUES (?, ?, ?)`, [answer.addRole, answer.salary, answer.department], (err, result) => {
         if (err) throw err;
         console.log(`Added ${answer.addRole} to the database.`)
-        employee_tracker();
+        options();
       })
     })
 };
@@ -178,10 +181,80 @@ addEmployee = () => {
           return false;
         }
       }
+    },
+    {
+      // adding employee role
+      type: 'input',
+      name: 'employeeRole',
+      message: 'What is the employees role?',
+      validate: employeeRoleInput => {
+        if (employeeRoleInput) {
+          return true;
+        } else {
+          console.log('Please Add A Role!');
+          return false;
+        }
+      }
+    },
+    {
+      // adding mamager 
+      type: 'input',
+      name: 'manager',
+      message: 'Who is the employees manager?',
+      validate: managerInput => {
+        if (managerInput) {
+          return true;
+        } else {
+          console.log('Please Add A Manager!');
+          return false;
+        }
+      }
     }
   ])
-}
+    .then((answer) => {
+      db.query(`INSERT INTO employees (first_name, last_name, role_id, ,manager_id) VALUES (?, ?, ?)`, [answer.firstName, answer.lastName, answer.employeeRole, answer.manager], (err, result) => {
+        if (err) throw err;
+        console.log(`Added ${answer.addRole} to the database.`)
+        options();
+      })
+    })
+};
 
+updateEmployee = () => {
+  inquirer.prompt([
+    // choose an employee to update
+    {
+      type: 'input',
+      name: 'employee',
+      message: 'Which employee would you like to change?',
+      validate: employeeInput => {
+        if (employeeInput) {
+          return true;
+        } else {
+          console.log('Please Choose An Employee!');
+          return false;
+        }
+      }
+    },
+    // choose which role the employee is assigned to
+    {
+      type: 'input',
+      name: 'role',
+      message: 'What is the employees new role?',
+      validate: employeeInput => {
+        if (employeeInput) {
+          return true;
+        } else {
+          console.log('Please Choose A Role!');
+          return false;
+        }
+      }
+    }
+  ])
+  .then((answer) => {
+   
+  })
+}
 
 app.use((req, res) => {
   res.status(404).end();
