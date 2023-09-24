@@ -1,7 +1,8 @@
 const express = require('express');
-// const inquirer = require ('inquirer');
+const inquirer = require('inquirer');
 // Import and require mysql2
 const mysql = require('mysql2');
+
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -10,6 +11,7 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+
 // Connect to database
 const db = mysql.createConnection(
   {
@@ -17,8 +19,175 @@ const db = mysql.createConnection(
     // MySQL username,
     user: 'root',
     // TODO: Add MySQL password here
-    password: '',
+    password: 'MySQL',
     database: 'employees_db'
   },
   console.log(`Connected to the employees_db database.`)
 );
+
+
+function options() {
+  inquirer.prompt([
+    {
+      type: 'list',
+      name: 'list',
+      choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role']
+    }
+  ])
+    .then((answers) => {
+      const { choices } = answers;
+
+
+      if (choices === "View all departments") {
+        // showDepartments();
+        db.query(`SELECT * FROM departments`, function (err, results) {
+          console.log(results);
+        });
+        options();
+      }
+
+      if (choices === "View all roles") {
+        // showRoles();
+        db.query('SELECT * FROM roles JOIN departments ON roles.department_id = department.id', function (err, results) {
+          console.log(results);
+        });
+        options();
+      }
+
+      if (choices === "View all employees") {
+        // showEmployees();
+        db.query('SELECT * FROM employees JOIN departments on employees.department_id = department.id JOIN roles on employees.role_id = roles.id', function (err, results) {
+          console.log(results);
+        });
+        options();
+      }
+      if (choices === "Add a department") {
+        addDepartment();
+      }
+
+      if (choices === "Add a role") {
+        addRole();
+      }
+
+      if (choices === "Add an employee") {
+        addEmployee();
+      }
+
+      if (choices === "Update an employee role") {
+        updateEmployee();
+      }
+    });
+};
+
+addDepartment = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'addDept',
+      message: "What department would you like to add?",
+
+    }
+  ])
+    .then((answer) => {
+      db.query('INSERT INTO departments (department_name) VALUES (?)', [answer.addDept], (err, result) => {
+        if (err) throw err;
+        console.log(`Added ${answers.departments} to the department table.`)
+        options();
+      })
+    })
+};
+
+
+addRole = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'addRole',
+      message: "What role would you like to add?",
+      validate: roleInput => {
+        if (roleInput) {
+          return true;
+        } else {
+          console.log('Please Add A Role!');
+          return false;
+        }
+      }
+    },
+    {
+      type: 'input',
+      name: 'salary',
+      message: "what is the salary for this position?",
+      validate: salaryInput => {
+        if (salaryInput) {
+          return true;
+        } else {
+          console.log('Please Add A Salary!');
+          return false;
+        }
+      }
+    },
+    {
+      type: 'input',
+      name: 'department',
+      message: 'what department does this role belong to?',
+      validate: departmentInput => {
+        if (departmentInput) {
+          return true;
+        } else {
+          console.log('Please Add A Department!');
+          return false;
+        }
+      }
+    }
+  ])
+    .then((answer) => {
+      db.query(`INSERT INTO role (job_title, salary, department_id) VALUES (?, ?, ?)`, [answer.addRole, answer.salary, answer.department], (err, result) => {
+        if (err) throw err;
+        console.log(`Added ${answer.addRole} to the database.`)
+        employee_tracker();
+      })
+    })
+};
+
+addEmployee = () => {
+  inquirer.prompt([
+    {
+      // Adding Employee First Name
+      type: 'input',
+      name: 'firstName',
+      message: 'What is the employees first name?',
+      validate: firstNameInput => {
+        if (firstNameInput) {
+          return true;
+        } else {
+          console.log('Please Add A First Name!');
+          return false;
+        }
+      }
+    },
+    {
+      // Adding Employee Last Name
+      type: 'input',
+      name: 'lastName',
+      message: 'What is the employees last name?',
+      validate: lastNameInput => {
+        if (lastNameInput) {
+          return true;
+        } else {
+          console.log('Please Add A Salary!');
+          return false;
+        }
+      }
+    }
+  ])
+}
+
+
+app.use((req, res) => {
+  res.status(404).end();
+});
+
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
