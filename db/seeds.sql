@@ -6,10 +6,10 @@ VALUES ("Personal Training"),
     ("Janitorial");
 
 INSERT INTO roles (title, salary, department_id)
-VALUES ("Manager", 14.50, 3),
-    ("Trainer", 12.50, 1),
-    ("Cleaner", 8.50, 4),
-    ("Sales Assistant", 12.50, 2);
+VALUES ("Manager", '$14.50/hr', 3),
+    ("Trainer", '$12.50/hr', 1),
+    ("Cleaner", '$8.50/hr', 4),
+    ("Sales Assistant", '$12.50/hr', 2);
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES ("Joelene", "Roberts", 1, null),

@@ -1,18 +1,7 @@
-// const express = require('express');
+
 const inquirer = require('inquirer');
 // Import and require mysql2
 const mysql = require('mysql2');
-
-
-
-
-// const PORT = process.env.PORT || 3001;
-// const app = express();
-
-// // Express middleware
-// app.use(express.urlencoded({ extended: false }));
-// app.use(express.json());
-
 
 // Connect to database
 const db = mysql.createConnection(
@@ -43,45 +32,44 @@ function options() {
       choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role']
     }
   ])
-    .then((answers) => {
-      const { choices } = answers;
-
-      if (choices === "View all departments") {
+    .then((answers) => { 
+      if (answers.list === 'view all departments') {
         // showDepartments();
         db.query(`SELECT * FROM departments`, function (err, results) {
+          if (err) throw err;
           console.log(results);
+          options();
         });
-        options();
-      }
-
-      if (choices === "View all roles") {
+      } 
+      if (answers.list === 'view all roles') {
         // showRoles();
-        db.query(`SELECT * FROM roles JOIN departments ON roles.department_id = department.id`, function (err, results) {
+        db.query(`SELECT * FROM roles JOIN departments ON roles.department_id = departments.id`, function (err, results) {
+          if (err) throw err;
           console.log(results);
+          options();
         });
-        options();
       }
-
-      if (choices === "View all employees") {
+      if (answers.list === "view all employees") {
         // showEmployees();
-        db.query(`SELECT * FROM employees JOIN departments on employees.department_id = department.id JOIN roles on employees.role_id = roles.id`, function (err, results) {
+        db.query(`SELECT * FROM employees JOIN roles ON employees.role_id = roles.id`, function (err, results) {
+          if (err) throw err;
           console.log(results);
+          options();
         });
-        options();
       }
-      if (choices === "Add a department") {
+      if (answers.list === "add a department") {
         addDepartment();
       }
 
-      if (choices === "Add a role") {
+      if (answers.list === "add a role") {
         addRole();
       }
 
-      if (choices === "Add an employee") {
+      if (answers.list === "add an employee") {
         addEmployee();
       }
 
-      if (choices === "Update an employee role") {
+      if (answers.list === "update an employee role") {
         updateEmployee();
       }
     });
@@ -156,7 +144,7 @@ addRole = () => {
     }
   ])
     .then((answer) => {
-      db.query(`INSERT INTO role SET ?`,
+      db.query(`INSERT INTO roles SET ?`,
         {
           title: answer.addRole,
           salary: answer.salary,
@@ -251,7 +239,7 @@ updateEmployee = () => {
     {
       type: 'input',
       name: 'employee',
-      message: 'Which employee would you like to change?',
+      message: 'Which employee would you like to change? (Please enter employees last name)',
       validate: employeeInput => {
         if (employeeInput) {
           return true;
@@ -277,7 +265,7 @@ updateEmployee = () => {
     }
   ])
     .then((answer) => {
-      db.query(`UPDATE employee SET ? WHERE ?`,
+      db.query(`UPDATE employees SET ? WHERE ?`,
         [
           { role_id: answer.role },
           { last_name: answer.employee }
@@ -287,14 +275,4 @@ updateEmployee = () => {
           options();
         });
     })
-}
-
-// app.use((req, res) => {
-//   res.status(404).end();
-// });
-
-
-// app.listen(PORT, () => {
-//   console.log(`Server running on port ${PORT}`);
-
-// });
+};
