@@ -12,6 +12,7 @@ CREATE TABLE departments (
 CREATE TABLE roles (
    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
    title VARCHAR(30) NOT NULL,
+   -- made the salary a string so that I could make it show that it was at an hourly rate rather than yearly. the decimal kept on rounding the number up and i didn't want that
    salary VARCHAR(30) NOT NULL,
    department_id INT,
    CONSTRAINT fk_department FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE SET NULL
