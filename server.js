@@ -2,6 +2,7 @@
 const inquirer = require('inquirer');
 // Import and require mysql2
 const mysql = require('mysql2');
+const cTable = require('console.table');
 
 // Connect to database
 const db = mysql.createConnection(
@@ -35,25 +36,25 @@ function options() {
     .then((answers) => { 
       if (answers.list === 'view all departments') {
         // showDepartments();
-        db.query(`SELECT * FROM departments`, function (err, results) {
+        db.query(`SELECT * FROM departments`, function (err, rows) {
           if (err) throw err;
-          console.log(results);
+          console.table(rows);
           options();
         });
       } 
       if (answers.list === 'view all roles') {
         // showRoles();
-        db.query(`SELECT * FROM roles JOIN departments ON roles.department_id = departments.id`, function (err, results) {
+        db.query(`SELECT * FROM roles JOIN departments ON roles.department_id = departments.id`, function (err, rows) {
           if (err) throw err;
-          console.log(results);
+          console.table(rows);
           options();
         });
       }
       if (answers.list === "view all employees") {
         // showEmployees();
-        db.query(`SELECT * FROM employees JOIN roles ON employees.role_id = roles.id`, function (err, results) {
+        db.query(`SELECT * FROM employees JOIN roles ON employees.role_id = roles.id`, function (err, rows) {
           if (err) throw err;
-          console.log(results);
+          console.table(rows);
           options();
         });
       }
