@@ -36,6 +36,9 @@ This application can be used by typing in npm start or node server.js. Follow co
 
 ### Screenshots
 
+Video Link:
+https://drive.google.com/file/d/12UMh-kMR5Ym4qNZZjxxUHNsBxCzaQIfX/view
+
 ![screenshots](/images/Screen%20Shot%202023-09-25%20at%201.21.11%20PM.png)
 ![screenshots](/images/Screen%20Shot%202023-09-25%20at%201.16.14%20PM.png)
 ![screenshots](/images/Screen%20Shot%202023-09-25%20at%201.16.02%20PM.png)
