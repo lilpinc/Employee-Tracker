@@ -1,5 +1,5 @@
-# Note Taker 
-Note Taker
+# Employee Tracker
+Employee Tracker
 
   ![GitHub license](https://img.shields.io/badge/License-MIT-green.svg)
 
