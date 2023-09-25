@@ -21,7 +21,7 @@ This application is an Employee Tracker, it is a command line application that a
 
 ## Motivation
 
-This Employee Tracker demonstrates how you can use inquirer and mysql in the backend to create a dynamic system. By using mysql and inquirer, the information is stored within tables that can be easily utilized and altered based on the users task choice. 
+This Employee Tracker demonstrates how you can use inquirer and mysql in to create a dynamic system. By using mysql and inquirer, the information is stored within tables that can be easily utilized and altered based on the users task choice. 
 
 ### Installation
 
@@ -36,7 +36,9 @@ This application can be used by typing in npm start or node server.js. Follow co
 
 ### Screenshots
 
-
+[!screenshots](/images/Screen%20Shot%202023-09-25%20at%201.21.11%20PM.png)
+[!screenshots](/images/Screen%20Shot%202023-09-25%20at%201.16.02%20PM.png)
+[!screenshots](/images/Screen%20Shot%202023-09-25%20at%201.16.14%20PM.png)
 
 ### Questions?
 
